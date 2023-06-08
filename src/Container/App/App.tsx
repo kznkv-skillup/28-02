@@ -4,28 +4,30 @@ import { StyledEngineProvider } from '@mui/material/styles'
 import Main from 'Container/Main/Main'
 import { useState } from 'react'
 
-type CartData = {
-    totalCount: number
-    totalPrice: number
+type ProductsInCart = {
+    [id: number]: number
 }
 
 const App = () => {
-    const [cartData, setCartData] = useState<CartData>({
-        totalCount: 0,
-        totalPrice: 0,
+    const [productsInCart, setProductsInCart] = useState<ProductsInCart>({
+        1: 5,
+        2: 5,
     })
 
-    const addProductToCart = (count: number, price: number) => {
-        setCartData((prevState) => ({
-            totalCount: prevState.totalCount + count,
-            totalPrice: prevState.totalPrice + count * price,
+    const addProductToCart = (id: number, count: number) => {
+        setProductsInCart((prevState) => ({
+            ...prevState,
+            [id]: (prevState[id] || 0) + count,
         }))
     }
 
     return (
         <StyledEngineProvider injectFirst>
             <CssBaseline />
-            <Header cartData={cartData} />
+            <Header productsInCart={productsInCart} />
+            <button onClick={() => addProductToCart(2, 5)}>
+                Add to Cart (id:3, count:1)
+            </button>
             <Main addProductToCart={addProductToCart} />
         </StyledEngineProvider>
     )
